@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import App from "./App";
 import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
@@ -12,6 +12,9 @@ const router = createBrowserRouter([
 				// If no path is specified, loads Home
 				path: "/*",
 				element: <Home />,
+				loader: () => {
+					return redirect("/index")
+				}
 			},
 			{
 				path: "/index",
@@ -23,7 +26,7 @@ const router = createBrowserRouter([
 							return res.data;
 						});
 					return dropdownValues;
-				},
+				}
 			},
 			{
 				path: "/employee-list",
