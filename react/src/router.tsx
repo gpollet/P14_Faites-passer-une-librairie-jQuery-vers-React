@@ -1,17 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import App from "./App";
 import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
 import axios from "axios";
-
-const homeLoader = async () => {
-	const dropdownValues = await axios
-		.get("../src/api/employeeCreationDropdownValues.json")
-		.then((res) => {
-			return res.data;
-		});
-	return dropdownValues;
-}
 
 const router = createBrowserRouter([
 	{
@@ -21,12 +12,21 @@ const router = createBrowserRouter([
 				// If no path is specified, loads Home
 				path: "/*",
 				element: <Home />,
-				loader: homeLoader
+				loader: () => {
+					return redirect("/index")
+				}
 			},
 			{
 				path: "/index",
 				element: <Home />,
-        loader: homeLoader
+        loader: async () => {
+					const dropdownValues = await axios
+						.get("../src/api/employeeCreationDropdownValues.json")
+						.then((res) => {
+							return res.data;
+						});
+					return dropdownValues;
+				}
 			},
 			{
 				path: "/employee-list",
