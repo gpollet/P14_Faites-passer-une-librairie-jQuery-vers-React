@@ -4,6 +4,7 @@ import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
 import axios from "axios";
 import { Employee } from "./types";
+import { collectionListAll } from "./api/api";
 
 const router = createBrowserRouter([
 	{
@@ -31,14 +32,10 @@ const router = createBrowserRouter([
 				path: "/employee-list",
 				element: <EmployeeList />,
 				loader: async () => {
-					const mockEmployeesList = await axios
-						.get("../src/api/employees.json")
-						.then((res) => {
-							res.data.map(
-								(employee: Employee, index: number) => (employee.id = index)
-							);
-							return res.data;
-						});
+					const mockEmployeesList = await collectionListAll("employees");
+					mockEmployeesList?.map(
+						(employee: Employee, index: number) => (employee.id = index)
+					);
 
 					return { employees: mockEmployeesList };
 				},
