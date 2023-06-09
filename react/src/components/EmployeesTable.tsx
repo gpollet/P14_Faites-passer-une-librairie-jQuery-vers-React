@@ -4,21 +4,28 @@ import {
 	GridColDef,
 	GridRowsProp,
 	GridToolbarQuickFilter,
-	GridApi,
 } from "@mui/x-data-grid";
 import _ from "lodash";
+import { Employee } from "../types";
 
 const EmployeesTable = () => {
-	const employeesList = useLoaderData().employees;
-	const fieldsList = useLoaderData().tableFields[0].fields;
+	const { employees } = useLoaderData() as Employee;
 
-	// Auto generates the name of the columns, provided by API
-	const tableColumns: GridColDef[] = fieldsList.map((field) => {
-		const fieldName = _.camelCase(field);
-		return { field: `${fieldName}`, headerName: `${field}`, width: 150 };
+	// Auto generates the name of the columns based on the [key] names from {employees} entries, and removes "id" (added in router.tsx) from the columns to display
+	const fieldsList = () => {
+		const fields = Object.keys(employees[0]);
+		fields.pop();
+		return fields;
+	};
+	
+	const tableColumns: GridColDef[] = fieldsList().map((element: string) => {
+		const fieldName = _.camelCase(element);
+		// Reverts camel case to display columns names in a readable format
+		const columnName = _.startCase(fieldName);
+		return { field: `${fieldName}`, headerName: `${columnName}`, width: 150 };
 	});
 
-	const rows: GridRowsProp = [...employeesList];
+	const rows: GridRowsProp = employees;
 	return (
 		<>
 			<DataGrid
@@ -33,11 +40,10 @@ const EmployeesTable = () => {
 					MuiTablePagination: {
 						labelDisplayedRows: ({ from, to, count }) =>
 							`Showing ${from} to ${to} of ${count} entries`,
-            labelRowsPerPage: 'Entries per page'
+						labelRowsPerPage: "Entries per page",
 					},
-
 				}}
-        disableColumnMenu
+				disableColumnMenu
 				hideFooterSelectedRowCount
 				pageSizeOptions={[10, 25, 50, 100]}
 			/>

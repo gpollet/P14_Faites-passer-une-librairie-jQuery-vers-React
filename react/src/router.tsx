@@ -3,6 +3,7 @@ import App from "./App";
 import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
 import axios from "axios";
+import { Employee } from "./types";
 
 const router = createBrowserRouter([
 	{
@@ -13,20 +14,18 @@ const router = createBrowserRouter([
 				path: "/*",
 				element: <Home />,
 				loader: () => {
-					return redirect("/index")
-				}
+					return redirect("/index");
+				},
 			},
 			{
 				path: "/index",
 				element: <Home />,
-        loader: async () => {
-					const dropdownValues = await axios
-						.get("../src/api/employeeCreationDropdownValues.json")
-						.then((res) => {
-							return res.data;
-						});
-					return dropdownValues;
-				}
+				loader: async () => {
+					const { data } = await axios.get(
+						"../src/api/employeeCreationDropdownValues.json"
+					);
+					return { states: data.states, departments: data.departments };
+				},
 			},
 			{
 				path: "/employee-list",
@@ -35,17 +34,13 @@ const router = createBrowserRouter([
 					const mockEmployeesList = await axios
 						.get("../src/api/employees.json")
 						.then((res) => {
-              res.data.map((employee, index) => 
-                employee.id = index
-              )
+							res.data.map(
+								(employee: Employee, index: number) => (employee.id = index)
+							);
 							return res.data;
 						});
-					const tableFields = await axios
-						.get("../src/api/dataFields.json")
-						.then((res) => {
-							return res.data;
-						});
-					return {"employees":mockEmployeesList, "tableFields":tableFields};
+
+					return { employees: mockEmployeesList };
 				},
 			},
 		],
