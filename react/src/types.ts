@@ -1,17 +1,31 @@
-import { createTheme } from '@mui/material';
-import type {} from '@mui/x-data-grid/themeAugmentation';
+import type {} from "@mui/x-data-grid/themeAugmentation";
 
-const muiTheme = createTheme({
-  components: {
-    // Use `MuiDataGrid` on DataGrid, DataGridPro and DataGridPremium
-    MuiDataGrid: {
-      styleOverrides: {
-        root: {
-          //backgroundColor: 'red',
-        },
-      },
-    },
-  },
-});
+export interface DropdownValues {
+	name: string;
+}
 
-export default muiTheme
+export interface Employee {
+	id: number;
+	employees: [
+		{
+			firstName: string;
+			lastName: string;
+			startDate: string;
+			department: string;
+			dateOfBirth: string;
+			street: string;
+			city: string;
+			state: string;
+			zipCode: string;
+			id?: number;
+		}
+	];
+}
+
+export interface States {
+	states: [{ name: string; abbreviation?: string }];
+}
+
+export interface Departments {
+	departments: [{ name: string }];
+}

@@ -1,22 +1,14 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
+import Dropdown from "./Dropdown";
+import { Departments, States } from "../types";
 
 const EmployeeCreationForm = () => {
 	const [birthDate, setBirthDate] = useState<Date | null>(null);
 	const [startDate, setStartDate] = useState<Date | null>(null);
-	const statesList = useLoaderData()[0].states;
-	const departmentsList = useLoaderData()[1].departments;
-
-	// Creates the list of possible State values, provided by the API
-	const createStatesDropdown = statesList.map((element) => {
-		return <option key={element.name}>{element.name}</option>;
-	});
-
-	// Creates the list of possible Department values, provided by the API
-	const createDepartmentDropdown = departmentsList.map((element) => {
-		return <option key={element.name}>{element.name}</option>;
-	});
+	const { states } = useLoaderData() as States;
+	const { departments } = useLoaderData() as Departments;
 
 	// Disables birth dates that would result in an age lower than {minimumAge} years old
 	const getMaximumBirthDate = () => {
@@ -27,6 +19,7 @@ const EmployeeCreationForm = () => {
 		);
 		return new Date(maxDate);
 	};
+
 	return (
 		<>
 			<form action="#" id="create-employee">
@@ -62,19 +55,13 @@ const EmployeeCreationForm = () => {
 					<label htmlFor="city">City</label>
 					<input id="city" type="text" />
 
-					<label htmlFor="state">State</label>
-					<select name="state" id="state">
-						{createStatesDropdown}
-					</select>
+					<Dropdown label="State" data={states} id="state" />
 
 					<label htmlFor="zip-code">Zip Code</label>
 					<input id="zip-code" type="number" />
 				</fieldset>
 
-				<label htmlFor="department">Department</label>
-				<select name="department" id="department">
-					{createDepartmentDropdown}
-				</select>
+				<Dropdown label="Department" data={departments} id="department" />
 			</form>
 		</>
 	);

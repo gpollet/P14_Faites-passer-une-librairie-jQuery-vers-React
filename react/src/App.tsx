@@ -6,7 +6,7 @@ function App() {
   return (
     <>
     <MantineProvider
-    //withGlobalStyles
+    withGlobalStyles
     withNormalizeCSS>
     <Outlet />
     </MantineProvider>

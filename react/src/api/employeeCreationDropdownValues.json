@@ -1,4 +1,3 @@
-[
 	{
 		"states": [
 			{
@@ -238,8 +237,7 @@
 				"abbreviation": "WY"
 			}
 		]
-	},
-	{
+	,
 		"departments": [
 			{ "name": "Sales" },
 			{ "name": "Marketing" },
@@ -248,4 +246,4 @@
 			{ "name": "Legal" }
 		]
 	}
-]
+
