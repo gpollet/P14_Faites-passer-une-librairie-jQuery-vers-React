@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import EmployeeCreationForm from "../components/EmployeeCreationForm";
+import EmployeeCreationModal from "../components/EmployeeCreationModal";
 
 const Home = () => {
 	return (
@@ -12,14 +13,8 @@ const Home = () => {
 				<a href="employee-list.html"></a>
 				<h2>Create Employee</h2>
 				<EmployeeCreationForm />
-
-				<button 
-        //onClick="saveEmployee()"
-        >Save</button>
+				<EmployeeCreationModal />
 			</div>
-			{/*<div id="confirmation" className="modal">
-				Employee Created!
-			</div>*/}
 		</>
 	);
 };
