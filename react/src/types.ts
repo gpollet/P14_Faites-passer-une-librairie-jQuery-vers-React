@@ -7,7 +7,7 @@ export interface DropdownValues {
 export interface Employee {
 	dateOfBirth: Date;
 	startDate: Date;
-	_id: number;
+	_id?: number;
 	firstName: string;
 	lastName: string;
 	department: string;
@@ -24,4 +24,16 @@ export interface States {
 
 export interface Departments {
 	departments: [{ name: string }];
+}
+
+export interface NewEmployeeData {
+	firstName: string;
+		lastName: string;
+		dateOfBirth?: Date;
+		startDate?: Date;
+		street: string;
+		city: string;
+		state: string;
+		zipCode: string;
+		department: string;
 }
