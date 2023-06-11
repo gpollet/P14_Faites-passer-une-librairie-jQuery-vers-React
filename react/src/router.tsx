@@ -33,9 +33,11 @@ const router = createBrowserRouter([
 				element: <EmployeeList />,
 				loader: async () => {
 					const mockEmployeesList = await collectionListAll("employees");
-					mockEmployeesList?.map(
-						(employee: Employee, index: number) => (employee.id = index)
-					);
+					mockEmployeesList?.map((employee: Employee, index: number) => {
+						employee.startDate = new Date().toLocaleDateString("fr")
+						employee.dateOfBirth = new Date().toLocaleDateString("fr")
+						employee.id = index;
+					});
 
 					return { employees: mockEmployeesList };
 				},

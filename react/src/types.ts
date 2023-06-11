@@ -5,21 +5,17 @@ export interface DropdownValues {
 }
 
 export interface Employee {
-	id: number;
-	employees: [
-		{
-			firstName: string;
-			lastName: string;
-			startDate: string;
-			department: string;
-			dateOfBirth: string;
-			street: string;
-			city: string;
-			state: string;
-			zipCode: string;
-			id?: number;
-		}
-	];
+	dateOfBirth: string;
+	startDate: string;
+	_id: number;
+	firstName: string;
+	lastName: string;
+	department: string;
+	street: string;
+	city: string;
+	state: string;
+	zipCode: string;
+	id?: number;
 }
 
 export interface States {
