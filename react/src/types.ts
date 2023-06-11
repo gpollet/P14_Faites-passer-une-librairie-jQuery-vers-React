@@ -27,10 +27,11 @@ export interface Departments {
 }
 
 export interface NewEmployeeData {
+	[key:string]: FormDataEntryValue | Date | null,
 	firstName: string;
 		lastName: string;
-		dateOfBirth?: Date;
-		startDate?: Date;
+		dateOfBirth: Date | null;
+		startDate: Date | null;
 		street: string;
 		city: string;
 		state: string;
