@@ -5,8 +5,8 @@ export interface DropdownValues {
 }
 
 export interface Employee {
-	dateOfBirth: string;
-	startDate: string;
+	dateOfBirth: Date;
+	startDate: Date;
 	_id: number;
 	firstName: string;
 	lastName: string;

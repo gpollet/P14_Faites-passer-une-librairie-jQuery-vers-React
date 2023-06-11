@@ -61,6 +61,7 @@ const EmployeeCreationForm = () => {
 					label={"Start Date"}
 					name={"start-date"}
 					value={startDate}
+					valueFormat="DD/MM/YYYY"
 					onChange={setStartDate}
 					clearable
 				/>

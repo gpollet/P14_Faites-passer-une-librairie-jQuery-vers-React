@@ -34,8 +34,8 @@ const router = createBrowserRouter([
 				loader: async () => {
 					const mockEmployeesList = await collectionListAll("employees");
 					mockEmployeesList?.map((employee: Employee, index: number) => {
-						employee.startDate = new Date().toLocaleDateString("fr")
-						employee.dateOfBirth = new Date().toLocaleDateString("fr")
+						employee.startDate = new Date(employee.startDate)
+						employee.dateOfBirth = new Date(employee.dateOfBirth)
 						employee.id = index;
 					});
 

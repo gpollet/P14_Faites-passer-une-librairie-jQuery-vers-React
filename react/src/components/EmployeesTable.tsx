@@ -15,16 +15,28 @@ const EmployeesTable = () => {
 	const fieldsList = () => {
 		const fields = Object.keys(employees[0]);
 		// Removes _id (auto-added by MongoDB at index 0)
-		fields.shift()
+		fields.shift();
 		fields.pop();
 		return fields;
 	};
-	
+
 	const tableColumns: GridColDef[] = fieldsList().map((element: string) => {
 		const fieldName = _.camelCase(element);
-		// Reverts camel case to display columns names in a readable format
-		const columnName = _.startCase(fieldName);
-		return { field: `${fieldName}`, headerName: `${columnName}`, width: 150 };
+		const field: {
+			field: string;
+			headerName: string;
+			width: number;
+			type?: string;
+		} = {
+			field: fieldName,
+			// Reverts camel case to display columns names in a readable format
+			headerName: _.startCase(fieldName),
+			width: 150,
+		};
+		if (fieldName === "startDate" || fieldName === "dateOfBirth") {
+			field.type = "date";
+		}
+		return field;
 	});
 
 	const rows: GridRowsProp = employees;
