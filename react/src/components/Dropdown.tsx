@@ -5,6 +5,7 @@ const Dropdown = ({
 }: {
 	data: { name: string }[];
 	label: string;
+	name?: string,
 	id: string;
 }): JSX.Element => {
 	

@@ -2,13 +2,18 @@ import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import Dropdown from "./Dropdown";
-import { Departments, States } from "../types";
+import { Departments, NewEmployeeData, States } from "../types";
+import { Modal, NumberInput, TextInput } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import _ from "lodash";
+import { createDocument } from "../api/api";
 
 const EmployeeCreationForm = () => {
 	const [birthDate, setBirthDate] = useState<Date | null>(null);
 	const [startDate, setStartDate] = useState<Date | null>(null);
 	const { states } = useLoaderData() as States;
 	const { departments } = useLoaderData() as Departments;
+	const [opened, { open, close }] = useDisclosure(false);
 
 	// Disables birth dates that would result in an age lower than {minimumAge} years old
 	const getMaximumBirthDate = () => {
@@ -20,49 +25,88 @@ const EmployeeCreationForm = () => {
 		return new Date(maxDate);
 	};
 
+	const createEmployee = (event: { preventDefault: () => void }) => {
+		event.preventDefault();
+		const form = document.getElementById("create-employee") as HTMLFormElement;
+		const formData = new FormData(form);
+		const data:NewEmployeeData = {
+			firstName: "",
+			lastName: "",
+			dateOfBirth: undefined,
+			startDate: undefined,
+			street: "",
+			city: "",
+			state: "",
+			zipCode: "",
+			department: ""
+		};
+		for (const [key, value] of formData) {
+			const formatedKeyName = _.camelCase(key)
+			if (
+				_.camelCase(key) === "dateOfBirth" ||
+				_.camelCase(key) === "startDate"
+			) {
+				data[formatedKeyName] = new Date(value);
+			} else {
+				data[formatedKeyName] = value;
+			}
+		}
+		createDocument("employees", data);
+	};
+
 	return (
 		<>
-			<form action="#" id="create-employee">
-				<label htmlFor="first-name">First Name</label>
-				<input type="text" id="first-name" />
-
-				<label htmlFor="last-name">Last Name</label>
-				<input type="text" id="last-name" />
-
-				<label htmlFor="date-of-birth">Date of Birth</label>
+			<form
+				onSubmit={createEmployee}
+				id="create-employee"
+				name="create-employee">
+				<TextInput name="first-name" label="First Name" />
+				<TextInput name="last-name" label="Last Name" />
+				
 				<DatePickerInput
-					id="date-of-birth"
+					label={"Date of Birth"}
+					name={"date-of-birth"}
 					value={birthDate}
+					valueFormat="DD/MM/YYYY"
 					maxDate={getMaximumBirthDate()}
 					onChange={setBirthDate}
 					clearable
 				/>
 
-				<label htmlFor="start-date">Start Date</label>
 				<DatePickerInput
-					id="start-date"
+					label={"Start Date"}
+					name={"start-date"}
 					value={startDate}
+					valueFormat="DD/MM/YYYY"
 					onChange={setStartDate}
 					clearable
 				/>
 
 				<fieldset className="address">
 					<legend>Address</legend>
-
-					<label htmlFor="street">Street</label>
-					<input id="street" type="text" />
-
-					<label htmlFor="city">City</label>
-					<input id="city" type="text" />
-
-					<Dropdown label="State" data={states} id="state" />
-
-					<label htmlFor="zip-code">Zip Code</label>
-					<input id="zip-code" type="number" />
+					<TextInput name="street" label="Street" />
+					<TextInput name="city" label="City" />
+					<Dropdown label="State" data={states} id="state" name="states" />
+					<NumberInput label="Zip Code" name="zip-code" minLength={5} />
 				</fieldset>
 
-				<Dropdown label="Department" data={departments} id="department" />
+				<Dropdown
+					label="Department"
+					data={departments}
+					id="department"
+					name={"department"}
+				/>
+				<div>
+					<button type="submit" onClick={open}>
+						Save
+					</button>
+				</div>
 			</form>
+			<div>
+				<Modal opened={opened} onClose={close} centered>
+					<p>Employee Created!</p>
+				</Modal>
+			</div>
 		</>
 	);
 };
