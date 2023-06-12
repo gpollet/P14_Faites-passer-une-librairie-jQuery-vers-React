@@ -2,7 +2,7 @@ import * as Realm from "realm-web";
 import { NewEmployeeData } from "../types";
 //import { Employee } from "../types";
 
-const app = new Realm.App({ id: import.meta.env.VITE_APP_ID });
+const app = new Realm.App({ id: 'hrnet-npxzf' });
 const mongo = app.currentUser?.mongoClient("mongodb-atlas");
 const dbName = mongo?.db("mock");
 

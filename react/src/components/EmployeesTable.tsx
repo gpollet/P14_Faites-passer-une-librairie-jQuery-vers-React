@@ -4,18 +4,25 @@ import {
 	GridColDef,
 	GridRowsProp,
 	GridToolbarQuickFilter,
+	GridRow,
+	GridColumnHeaders,
 } from "@mui/x-data-grid";
 import _ from "lodash";
 import { Employee } from "../types";
+import React from "react";
 
 const EmployeesTable = () => {
-	const { employees } = useLoaderData() as {employees:Employee};
-	// Auto generates the name of the columns based on the [key] names from {employees} entries, 
+	const MemoizedRow = React.memo(GridRow);
+	const MemoizedColumnHeaders = React.memo(GridColumnHeaders);
+	const { employees } = useLoaderData() as { employees: Employee };
+	// Auto generates the name of the columns based on the [key] names from {employees} entries,
 	const fieldsList = () => {
 		const fields = Object.keys(employees[0]);
-		
+
 		// Removes _id (auto-added by MongoDB at index 0) and "id" (added in router.tsx) from the columns to display
-		const fieldsToDisplay = fields.filter(key => key !== "_id" && key !== "id")
+		const fieldsToDisplay = fields.filter(
+			(key) => key !== "_id" && key !== "id"
+		);
 		return fieldsToDisplay;
 	};
 
@@ -45,7 +52,8 @@ const EmployeesTable = () => {
 				rows={rows}
 				columns={tableColumns}
 				// Adds a search bar to the table
-				slots={{ toolbar: GridToolbarQuickFilter }}
+				slots={{ toolbar: GridToolbarQuickFilter, row: MemoizedRow,
+					columnHeaders: MemoizedColumnHeaders, }}
 				initialState={{
 					pagination: { paginationModel: { pageSize: 10 } },
 				}}

@@ -2,7 +2,6 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import App from "./App";
 import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
-import axios from "axios";
 import { EmployeeData } from "./types";
 import { collectionListAll } from "./api/api";
 
@@ -22,10 +21,9 @@ const router = createBrowserRouter([
 				path: "/index",
 				element: <Home />,
 				loader: async () => {
-					const { data } = await axios.get(
-						"../src/api/employeeCreationDropdownValues.json"
-					);
-					return { states: data.states, departments: data.departments };
+					const states = await collectionListAll("states")
+					const departments = await collectionListAll("departments")
+					return { states: states, departments: departments };
 				},
 			},
 			{
