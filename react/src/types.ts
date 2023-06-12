@@ -4,21 +4,23 @@ export interface DropdownValues {
 	name: string;
 }
 
+export interface EmployeeData {
+	dateOfBirth: Date;
+	startDate: Date;
+	_id?: number;
+	firstName: string;
+	lastName: string;
+	department: string;
+	street: string;
+	city: string;
+	state: string;
+	zipCode: string;
+	id?: number;
+}
+
 export type Employee = Array<{
-	employees: {
-		dateOfBirth: Date;
-		startDate: Date;
-		_id?: number;
-		firstName: string;
-		lastName: string;
-		department: string;
-		street: string;
-		city: string;
-		state: string;
-		zipCode: string;
-		id?: number;
-	}
-}>
+	employees: EmployeeData;
+}>;
 
 export interface States {
 	states: [{ name: string; abbreviation?: string }];
@@ -29,14 +31,14 @@ export interface Departments {
 }
 
 export interface NewEmployeeData {
-	[key:string]: FormDataEntryValue | Date | null,
+	[key: string]: FormDataEntryValue | Date | null;
 	firstName: string;
-		lastName: string;
-		dateOfBirth: Date | null;
-		startDate: Date | null;
-		street: string;
-		city: string;
-		state: string;
-		zipCode: string;
-		department: string;
+	lastName: string;
+	dateOfBirth: Date | null;
+	startDate: Date | null;
+	street: string;
+	city: string;
+	state: string;
+	zipCode: string;
+	department: string;
 }

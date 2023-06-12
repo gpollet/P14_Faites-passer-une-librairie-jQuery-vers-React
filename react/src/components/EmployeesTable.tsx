@@ -10,7 +10,6 @@ import { Employee } from "../types";
 
 const EmployeesTable = () => {
 	const { employees } = useLoaderData() as {employees:Employee};
-	
 	// Auto generates the name of the columns based on the [key] names from {employees} entries, 
 	const fieldsList = () => {
 		const fields = Object.keys(employees[0]);
