@@ -3,13 +3,13 @@ import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import Dropdown from "./Dropdown";
 import { Departments, NewEmployeeData, States } from "../types";
-import { Modal, NumberInput, TextInput } from "@mantine/core";
+import { Modal, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import _ from "lodash";
 import { createDocument } from "../api/api";
 
 const EmployeeCreationForm = () => {
-	const [startDate, setStartDate] = useState<Date | null>(new Date());
+	const [startDate, setStartDate] = useState<Date | null>(null);
 	const { states } = useLoaderData() as States;
 	const { departments } = useLoaderData() as Departments;
 	const [opened, { open, close }] = useDisclosure(false);
@@ -23,9 +23,7 @@ const EmployeeCreationForm = () => {
 		);
 		return new Date(maxDate);
 	};
-	const [birthDate, setBirthDate] = useState<Date | null>(
-		new Date(getMaximumBirthDate())
-	);
+	const [birthDate, setBirthDate] = useState<Date | null>(null);
 
 	const createEmployee = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
@@ -42,7 +40,7 @@ const EmployeeCreationForm = () => {
 			state: "",
 			zipCode: "",
 		};
-		
+
 		// Retrieves the value of each input
 		for (const [key] of formData) {
 			const formatedKeyName = _.camelCase(key);
@@ -50,6 +48,7 @@ const EmployeeCreationForm = () => {
 				data[formatedKeyName] = formData.get(key);
 			}
 		}
+		//console.log(data)
 		createDocument("employees", data);
 	};
 
@@ -86,7 +85,9 @@ const EmployeeCreationForm = () => {
 					<TextInput name="street" label="Street" />
 					<TextInput name="city" label="City" />
 					<Dropdown label="State" data={states} id="state" name="states" />
-					<NumberInput label="Zip Code" name="zip-code" minLength={5} />
+					<TextInput label="Zip Code" name="zip-code" minLength={5} maxLength={5}
+					min={0}
+					/>
 				</fieldset>
 
 				<Dropdown
@@ -96,6 +97,7 @@ const EmployeeCreationForm = () => {
 					name={"department"}
 				/>
 				<div>
+					<br />
 					<button type="submit" onClick={open}>
 						Save
 					</button>
