@@ -34,14 +34,16 @@ const EmployeeCreationForm = () => {
 		const data: NewEmployeeData = {
 			firstName: "",
 			lastName: "",
+			department: "",
 			dateOfBirth: birthDate,
 			startDate: startDate,
 			street: "",
 			city: "",
 			state: "",
 			zipCode: "",
-			department: "",
 		};
+		
+		// Retrieves the value of each input
 		for (const [key] of formData) {
 			const formatedKeyName = _.camelCase(key);
 			if (formatedKeyName != "dateOfBirth" && formatedKeyName != "startDate") {
