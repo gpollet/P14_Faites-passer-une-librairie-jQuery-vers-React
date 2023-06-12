@@ -3,7 +3,7 @@ import App from "./App";
 import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
 import axios from "axios";
-import { Employee } from "./types";
+import { EmployeeData } from "./types";
 import { collectionListAll } from "./api/api";
 
 const router = createBrowserRouter([
@@ -33,9 +33,9 @@ const router = createBrowserRouter([
 				element: <EmployeeList />,
 				loader: async () => {
 					const mockEmployeesList = await collectionListAll("employees");
-					mockEmployeesList?.map((employee: Employee, index: number) => {
-						employee.startDate = new Date(employee.startDate)
-						employee.dateOfBirth = new Date(employee.dateOfBirth)
+					mockEmployeesList?.map((employee: EmployeeData, index: number) => {
+						employee.startDate = new Date(employee.startDate);
+						employee.dateOfBirth = new Date(employee.dateOfBirth);
 						employee.id = index;
 					});
 

@@ -9,15 +9,14 @@ import _ from "lodash";
 import { Employee } from "../types";
 
 const EmployeesTable = () => {
-	const { employees } = useLoaderData() as Employee;
-
-	// Auto generates the name of the columns based on the [key] names from {employees} entries, and removes "id" (added in router.tsx) from the columns to display
+	const { employees } = useLoaderData() as {employees:Employee};
+	// Auto generates the name of the columns based on the [key] names from {employees} entries, 
 	const fieldsList = () => {
 		const fields = Object.keys(employees[0]);
-		// Removes _id (auto-added by MongoDB at index 0)
-		fields.shift();
-		fields.pop();
-		return fields;
+		
+		// Removes _id (auto-added by MongoDB at index 0) and "id" (added in router.tsx) from the columns to display
+		const fieldsToDisplay = fields.filter(key => key !== "_id" && key !== "id")
+		return fieldsToDisplay;
 	};
 
 	const tableColumns: GridColDef[] = fieldsList().map((element: string) => {

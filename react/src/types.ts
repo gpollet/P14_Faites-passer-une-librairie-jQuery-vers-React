@@ -4,7 +4,7 @@ export interface DropdownValues {
 	name: string;
 }
 
-export interface Employee {
+export interface EmployeeData {
 	dateOfBirth: Date;
 	startDate: Date;
 	_id?: number;
@@ -18,6 +18,10 @@ export interface Employee {
 	id?: number;
 }
 
+export type Employee = Array<{
+	employees: EmployeeData;
+}>;
+
 export interface States {
 	states: [{ name: string; abbreviation?: string }];
 }
@@ -27,13 +31,14 @@ export interface Departments {
 }
 
 export interface NewEmployeeData {
+	[key: string]: FormDataEntryValue | Date | null;
 	firstName: string;
-		lastName: string;
-		dateOfBirth?: Date;
-		startDate?: Date;
-		street: string;
-		city: string;
-		state: string;
-		zipCode: string;
-		department: string;
+	lastName: string;
+	dateOfBirth: Date | null;
+	startDate: Date | null;
+	street: string;
+	city: string;
+	state: string;
+	zipCode: string;
+	department: string;
 }

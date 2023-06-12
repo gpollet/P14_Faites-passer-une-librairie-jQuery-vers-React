@@ -3,13 +3,12 @@ import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import Dropdown from "./Dropdown";
 import { Departments, NewEmployeeData, States } from "../types";
-import { Modal, NumberInput, TextInput } from "@mantine/core";
+import { Modal, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import _ from "lodash";
 import { createDocument } from "../api/api";
 
 const EmployeeCreationForm = () => {
-	const [birthDate, setBirthDate] = useState<Date | null>(null);
 	const [startDate, setStartDate] = useState<Date | null>(null);
 	const { states } = useLoaderData() as States;
 	const { departments } = useLoaderData() as Departments;
@@ -24,33 +23,32 @@ const EmployeeCreationForm = () => {
 		);
 		return new Date(maxDate);
 	};
+	const [birthDate, setBirthDate] = useState<Date | null>(null);
 
 	const createEmployee = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		const form = document.getElementById("create-employee") as HTMLFormElement;
 		const formData = new FormData(form);
-		const data:NewEmployeeData = {
+		const data: NewEmployeeData = {
 			firstName: "",
 			lastName: "",
-			dateOfBirth: undefined,
-			startDate: undefined,
+			department: "",
+			dateOfBirth: birthDate,
+			startDate: startDate,
 			street: "",
 			city: "",
 			state: "",
 			zipCode: "",
-			department: ""
 		};
-		for (const [key, value] of formData) {
-			const formatedKeyName = _.camelCase(key)
-			if (
-				_.camelCase(key) === "dateOfBirth" ||
-				_.camelCase(key) === "startDate"
-			) {
-				data[formatedKeyName] = new Date(value);
-			} else {
-				data[formatedKeyName] = value;
+
+		// Retrieves the value of each input
+		for (const [key] of formData) {
+			const formatedKeyName = _.camelCase(key);
+			if (formatedKeyName != "dateOfBirth" && formatedKeyName != "startDate") {
+				data[formatedKeyName] = formData.get(key);
 			}
 		}
+		//console.log(data)
 		createDocument("employees", data);
 	};
 
@@ -62,7 +60,7 @@ const EmployeeCreationForm = () => {
 				name="create-employee">
 				<TextInput name="first-name" label="First Name" />
 				<TextInput name="last-name" label="Last Name" />
-				
+
 				<DatePickerInput
 					label={"Date of Birth"}
 					name={"date-of-birth"}
@@ -87,7 +85,9 @@ const EmployeeCreationForm = () => {
 					<TextInput name="street" label="Street" />
 					<TextInput name="city" label="City" />
 					<Dropdown label="State" data={states} id="state" name="states" />
-					<NumberInput label="Zip Code" name="zip-code" minLength={5} />
+					<TextInput label="Zip Code" name="zip-code" minLength={5} maxLength={5}
+					min={0}
+					/>
 				</fieldset>
 
 				<Dropdown
@@ -97,6 +97,7 @@ const EmployeeCreationForm = () => {
 					name={"department"}
 				/>
 				<div>
+					<br />
 					<button type="submit" onClick={open}>
 						Save
 					</button>
