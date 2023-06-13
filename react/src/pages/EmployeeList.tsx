@@ -23,5 +23,3 @@ const EmployeeList = () => {
 };
 
 export default EmployeeList;
-
-// Pour fonction recherche, possible utiliser Component tout prêt (cf MUI)

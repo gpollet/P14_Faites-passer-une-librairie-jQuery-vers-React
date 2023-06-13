@@ -1,9 +1,8 @@
 import { createBrowserRouter, defer, redirect } from "react-router-dom";
 import App from "./App";
-import EmployeeList from "./pages/EmployeeList";
-import Home from "./pages/Home";
 import { EmployeeData } from "./types";
 import { collectionListAll } from "./api/api";
+import { lazy } from "react";
 
 const router = createBrowserRouter([
 	{
@@ -12,14 +11,13 @@ const router = createBrowserRouter([
 			{
 				// If no path is specified, loads Home
 				path: "/*",
-				element: <Home />,
 				loader: async () => {
 					return redirect("/index");
 				},
 			},
 			{
 				path: "/index",
-				element: <Home />,
+				Component: lazy(() => import("./pages/Home")),
 				loader:  async () => {
 					const states = collectionListAll("states")
 					const departments = collectionListAll("departments")
@@ -29,7 +27,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "/employee-list",
-				element: <EmployeeList />,
+				Component: lazy(() => import("./pages/EmployeeList")),
 				loader: async () => {
 					const mockEmployeesList = await collectionListAll("employees");
 					mockEmployeesList?.map((employee: EmployeeData, index: number) => {
