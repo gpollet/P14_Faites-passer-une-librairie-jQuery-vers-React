@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter, defer, redirect } from "react-router-dom";
 import App from "./App";
 import EmployeeList from "./pages/EmployeeList";
 import Home from "./pages/Home";
@@ -13,17 +13,18 @@ const router = createBrowserRouter([
 				// If no path is specified, loads Home
 				path: "/*",
 				element: <Home />,
-				loader: () => {
+				loader: async () => {
 					return redirect("/index");
 				},
 			},
 			{
 				path: "/index",
 				element: <Home />,
-				loader: async () => {
-					const states = await collectionListAll("states")
-					const departments = await collectionListAll("departments")
-					return { states: states, departments: departments };
+				loader:  async () => {
+					const states = collectionListAll("states")
+					const departments = collectionListAll("departments")
+					// Delays data query to after UI has loaded for improved performances and UX
+					return defer({ states: states, departments: departments });
 				},
 			},
 			{

@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Await, useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import Dropdown from "./Dropdown";
@@ -7,6 +7,7 @@ import { Modal, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import _ from "lodash";
 import { createDocument } from "../api/api";
+import React from "react";
 
 const EmployeeCreationForm = () => {
 	const [startDate, setStartDate] = useState<Date | null>(null);
@@ -84,18 +85,64 @@ const EmployeeCreationForm = () => {
 					<legend>Address</legend>
 					<TextInput name="street" label="Street" />
 					<TextInput name="city" label="City" />
-					<Dropdown label="State" data={states} id="state" name="states" />
-					<TextInput label="Zip Code" name="zip-code" minLength={5} maxLength={5}
-					min={0}
+
+					{/* Wait for the UI to be loaded before getting the data to be used */}
+					<React.Suspense
+						fallback={
+							<Dropdown
+								label="State"
+								data={[{ name: "Loading..." }]}
+								id="state"
+								name="states"
+							/>
+						}>
+						<Await resolve={states}>
+							{(statesData) => {
+								return (
+									<Dropdown
+										label="State"
+										data={statesData}
+										id="state"
+										name="states"
+									/>
+								);
+							}}
+						</Await>
+					</React.Suspense>
+
+					<TextInput
+						label="Zip Code"
+						name="zip-code"
+						minLength={5}
+						maxLength={5}
+						min={0}
 					/>
 				</fieldset>
 
-				<Dropdown
-					label="Department"
-					data={departments}
-					id="department"
-					name={"department"}
-				/>
+				{/* Wait for the UI to be loaded before getting the data to be used */}
+				<React.Suspense
+					fallback={
+						<Dropdown
+							label="Department"
+							data={[{ name: "Loading..." }]}
+							id="department"
+							name="department"
+						/>
+					}>
+					<Await resolve={departments}>
+						{(departmentsData) => {
+							return (
+								<Dropdown
+									label="Department"
+									data={departmentsData}
+									id="department"
+									name="department"
+								/>
+							);
+						}}
+					</Await>
+				</React.Suspense>
+
 				<div>
 					<br />
 					<button type="submit" onClick={open}>

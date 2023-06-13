@@ -1,23 +1,24 @@
 import * as Realm from "realm-web";
 import { NewEmployeeData } from "../types";
 
-const app = new Realm.App({ id: 'hrnet-npxzf' });
-const loginAnonymous = async () => {
-	return await app.logIn(Realm.Credentials.anonymous());
+// Connects to the database and retrieves the requested collection
+const database = async (collectionName: string) => {
+	// Initialize App
+	const app = new Realm.App({ id: "hrnet-npxzf" });
+	// Log in as an anonymous user
+	const user = await app.logIn(Realm.Credentials.anonymous());
+	const mongo = user.mongoClient("mongodb-atlas");
+	const dbName = mongo.db("mock");
+	return dbName?.collection(collectionName);
 };
-const mongo = app.currentUser?.mongoClient("mongodb-atlas");
-const dbName = mongo?.db("mock");
-loginAnonymous()
 
 export const collectionListAll = async (collectionName: string) => {
-	const collection = dbName?.collection(collectionName);
-	return await collection?.find({});
+	return (await database(collectionName)).find({});
 };
 
 export const createDocument = async (
 	collectionName: string,
 	data: NewEmployeeData
 ) => {
-	const collection = dbName?.collection(collectionName);
-	await collection?.insertOne(data);
+	await (await database(collectionName)).insertOne(data);
 };
