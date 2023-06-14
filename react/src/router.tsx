@@ -1,4 +1,4 @@
-import { createBrowserRouter, defer, redirect } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import App from "./App";
 import { EmployeeData } from "./types";
 import { collectionListAll } from "./api/api";
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
 					const states = collectionListAll("states")
 					const departments = collectionListAll("departments")
 					// Delays data query to after UI has loaded for improved performances and UX
-					return defer({ states: states, departments: departments });
+					return { states: await states, departments: await departments };
 				},
 			},
 			{
