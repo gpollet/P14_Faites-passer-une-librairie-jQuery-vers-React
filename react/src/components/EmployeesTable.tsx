@@ -4,44 +4,46 @@ import {
 	GridColDef,
 	GridRowsProp,
 	GridToolbarQuickFilter,
-	GridRow,
 	GridColumnHeaders,
 } from "@mui/x-data-grid";
-import _ from "lodash";
+import camelCase from "lodash.camelcase";
 import { Employee } from "../types";
 import React from "react";
 
 const EmployeesTable = () => {
-	const MemoizedRow = React.memo(GridRow);
 	const MemoizedColumnHeaders = React.memo(GridColumnHeaders);
 	const { employees } = useLoaderData() as { employees: Employee };
-	// Auto generates the name of the columns based on the [key] names from {employees} entries,
-	const fieldsList = () => {
-		const fields = Object.keys(employees[0]);
 
-		// Removes _id (auto-added by MongoDB at index 0) and "id" (added in router.tsx) from the columns to display
-		const fieldsToDisplay = fields.filter(
-			(key) => key !== "_id" && key !== "id"
-		);
-		return fieldsToDisplay;
-	};
+	const columnNames = [
+		"First Name",
+		"Last Name",
+		"Start Date",
+		"Department",
+		"Date Of Birth",
+		"Street",
+		"City",
+		"State",
+		"Zip Code",
+	];
 
-	const tableColumns: GridColDef[] = fieldsList().map((element: string) => {
-		const fieldName = _.camelCase(element);
+	// Generates the required properties for DataGrid columns display
+	const tableColumns: GridColDef[] = columnNames.map((element: string) => {
+		const getElementType =
+			element === "Start Date" || element === "Date Of Birth"
+				? "date"
+				: "string";
+
 		const field: {
 			field: string;
 			headerName: string;
 			width: number;
-			type?: string;
+			type: string;
 		} = {
-			field: fieldName,
-			// Reverts camel case to display columns names in a readable format
-			headerName: _.startCase(fieldName),
+			field: camelCase(element),
+			headerName: element,
 			width: 150,
+			type: getElementType,
 		};
-		if (fieldName === "startDate" || fieldName === "dateOfBirth") {
-			field.type = "date";
-		}
 		return field;
 	});
 
@@ -52,8 +54,10 @@ const EmployeesTable = () => {
 				rows={rows}
 				columns={tableColumns}
 				// Adds a search bar to the table
-				slots={{ toolbar: GridToolbarQuickFilter, row: MemoizedRow,
-					columnHeaders: MemoizedColumnHeaders, }}
+				slots={{
+					toolbar: GridToolbarQuickFilter,
+					columnHeaders: MemoizedColumnHeaders,
+				}}
 				initialState={{
 					pagination: { paginationModel: { pageSize: 10 } },
 				}}

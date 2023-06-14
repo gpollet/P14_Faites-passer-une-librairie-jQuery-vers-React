@@ -1,15 +1,11 @@
 import { Outlet } from "react-router-dom"
 import "./style/app.css";
-import { MantineProvider } from "@mantine/core";
+import "normalize.css"
 
 function App() {
   return (
     <>
-    <MantineProvider
-    withGlobalStyles
-    withNormalizeCSS>
     <Outlet />
-    </MantineProvider>
     </>
   )
 }

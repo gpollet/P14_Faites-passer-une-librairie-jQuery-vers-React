@@ -20,6 +20,8 @@ const Dropdown = ({
 	const [selectValue, setSelectValue] = useState(label);
 
 	const createOptionList = () => {
+		//Failsafe to prevent component from breaking the App if data is missing
+		if (!data) return;
 		const orderedItems: string[] = [];
 		Object.values(data).map((element) => {
 			orderedItems.push(element.name);
@@ -56,9 +58,12 @@ const Dropdown = ({
 		);
 		matchingOptionElement?.setAttribute("selected", "");
 	};
+
 	return (
 		<>
-			<label style={{fontWeight: 500, fontSize: '0.875rem'}} htmlFor={id}>{label}</label>
+			<label style={{ fontWeight: 500, fontSize: "0.875rem" }} htmlFor={id}>
+				{label}
+			</label>
 			<select
 				onChange={(event) => {
 					updateSelectValue(event);
