@@ -1,16 +1,18 @@
 import { ChangeEvent, useState } from "react";
+import "../style/dropdown.css";
 
 const Dropdown = ({
 	data,
 	label,
 	id,
+	name = id,
 	width = 300,
 	height = 40,
 }: {
 	data: { name: string }[];
 	label: string;
-	name?: string;
 	id: string;
+	name?: string;
 	width?: number;
 	height?: number;
 }): JSX.Element => {
@@ -30,20 +32,11 @@ const Dropdown = ({
 		if (enableOptionSorting === true) orderedItems.sort();
 		return orderedItems.map((element, index) => {
 			return (
-				<option
-					key={index}
-					style={{ textAlign: "center", color: "black" }}
-					value={element}>
+				<option key={index} className="dropdown_option" value={element}>
 					{element}
 				</option>
 			);
 		});
-	};
-
-	const defaultSelectStyle: { width: number; height: number; color: string } = {
-		width: width,
-		height: height,
-		color: "gray",
 	};
 
 	// Selecting an <option> adds the 'selected' attribute to it, removes it from the previous value if it existed and updates the state with the new value.
@@ -60,27 +53,23 @@ const Dropdown = ({
 	};
 
 	return (
-		<>
-			<label style={{ fontWeight: 500, fontSize: "0.875rem" }} htmlFor={id}>
+		<div className={`dropdown-container`}>
+			<label className="dropdown_label" htmlFor={id}>
 				{label}
 			</label>
 			<select
+				className={`dropdown_select ${selectValue === label ?"dropdown_select-default":"dropdown_select-filled"}`}
 				onChange={(event) => {
 					updateSelectValue(event);
 				}}
 				value={selectValue}
-				name={id}
+				name={name}
 				id={id}
-				style={
-					(selectValue === label ? "" : (defaultSelectStyle.color = "black"),
-					defaultSelectStyle)
-				}>
-				<option style={{ textAlign: "center", color: "gray" }} disabled>
-					{label}
-				</option>
+				style={{width:width, height: height}}>
+				<option disabled>{label}</option>
 				{createOptionList()}
 			</select>
-		</>
+		</div>
 	);
 };
 

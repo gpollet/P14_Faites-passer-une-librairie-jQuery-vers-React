@@ -1,0 +1,30 @@
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+}
+
+.dropdown_label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  margin-bottom: 10px;
+}
+
+.dropdown_select {
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 0.0625rem solid #ced4da;
+}
+
+.dropdown_select-default {
+  color: gray;
+}
+
+.dropdown_select-filled {
+  color:black;
+}
+
+.dropdown-container option {
+  text-align: center;
+}
