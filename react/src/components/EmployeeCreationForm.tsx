@@ -1,12 +1,12 @@
 import { useLoaderData } from "react-router-dom";
-import { lazy, useState } from "react";
+import { useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import { MantineProvider, Modal, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Departments, NewEmployeeData, States } from "../types";
 import camelCase from "lodash.camelcase";
 import { createDocument } from "../api/api";
-const Dropdown = lazy(() => import("./Dropdown"));
+import Dropdown from "./Dropdown";
 
 const EmployeeCreationForm = () => {
 	const [startDate, setStartDate] = useState<Date | null>(null);
