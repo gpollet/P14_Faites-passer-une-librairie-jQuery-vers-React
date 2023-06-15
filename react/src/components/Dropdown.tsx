@@ -4,13 +4,14 @@ const Dropdown = ({
 	data,
 	label,
 	id,
+	name=id,
 	width = 300,
 	height = 40,
 }: {
 	data: { name: string }[];
 	label: string;
-	name?: string;
 	id: string;
+	name?: string;
 	width?: number;
 	height?: number;
 }): JSX.Element => {
@@ -60,7 +61,7 @@ const Dropdown = ({
 	};
 
 	return (
-		<>
+		<div className={`${id}-container`} style={{display:"flex", flexDirection:"column"}}>
 			<label style={{ fontWeight: 500, fontSize: "0.875rem" }} htmlFor={id}>
 				{label}
 			</label>
@@ -69,7 +70,7 @@ const Dropdown = ({
 					updateSelectValue(event);
 				}}
 				value={selectValue}
-				name={id}
+				name={name}
 				id={id}
 				style={
 					(selectValue === label ? "" : (defaultSelectStyle.color = "black"),
@@ -80,7 +81,7 @@ const Dropdown = ({
 				</option>
 				{createOptionList()}
 			</select>
-		</>
+		</div>
 	);
 };
 
