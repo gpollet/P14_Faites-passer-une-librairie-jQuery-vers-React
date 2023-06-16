@@ -4,14 +4,11 @@ import {
 	GridColDef,
 	GridRowsProp,
 	GridToolbarQuickFilter,
-	GridColumnHeaders,
 } from "@mui/x-data-grid";
 import camelCase from "lodash.camelcase";
 import { Employee } from "../types";
-import React from "react";
 
 const EmployeesTable = () => {
-	const MemoizedColumnHeaders = React.memo(GridColumnHeaders);
 	const { employees } = useLoaderData() as { employees: Employee };
 
 	const columnNames = [
@@ -56,7 +53,6 @@ const EmployeesTable = () => {
 				// Adds a search bar to the table
 				slots={{
 					toolbar: GridToolbarQuickFilter,
-					columnHeaders: MemoizedColumnHeaders,
 				}}
 				initialState={{
 					pagination: { paginationModel: { pageSize: 10 } },
